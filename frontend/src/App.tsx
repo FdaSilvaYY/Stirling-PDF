@@ -15,9 +15,11 @@ import ErrorBoundary from "@app/components/shared/ErrorBoundary";
 import OnboardingTour from "@app/components/onboarding/OnboardingTour";
 
 // Import auth components
-import { AuthBoundary } from "@app/auth/AuthBoundary";
+import { AuthProvider } from "@app/auth/UseSession";
 import Landing from "@app/routes/Landing";
-import { getAuthRoutes } from "@app/routes/AuthRoutes";
+import Login from "@app/routes/Login";
+import Signup from "@app/routes/Signup";
+import AuthCallback from "@app/routes/AuthCallback";
 
 // Import global styles
 import "@app/styles/tailwind.css";
@@ -47,16 +49,18 @@ const LoadingFallback = () => (
 );
 
 export default function App() {
-  const authRoutes = getAuthRoutes();
-
   return (
     <Suspense fallback={<LoadingFallback />}>
     <PreferencesProvider>
         <RainbowThemeProvider>
           <ErrorBoundary>
-            <AuthBoundary>
+            <AuthProvider>
               <Routes>
-                {authRoutes}
+                {/* Auth routes - no FileContext or other providers needed */}
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<Signup />} />
+                <Route path="/auth/callback" element={<AuthCallback />} />
+
                 {/* Main app routes - wrapped with all providers */}
                 <Route
                   path="/*"
@@ -90,7 +94,7 @@ export default function App() {
                   }
                 />
               </Routes>
-            </AuthBoundary>
+            </AuthProvider>
           </ErrorBoundary>
         </RainbowThemeProvider>
       </PreferencesProvider>
