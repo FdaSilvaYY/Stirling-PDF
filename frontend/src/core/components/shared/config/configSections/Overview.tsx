@@ -1,6 +1,7 @@
 import React from 'react';
 import { Stack, Text, Code, Group, Badge, Alert, Loader } from '@mantine/core';
 import { useAppConfig } from '@app/hooks/useAppConfig';
+import { OverviewHeader } from '@app/components/shared/config/OverviewHeader';
 
 const Overview: React.FC = () => {
   const { config, loading, error } = useAppConfig();
@@ -73,12 +74,7 @@ const Overview: React.FC = () => {
 
   return (
     <Stack gap="lg">
-      <div>
-        <Text fw={600} size="lg">Application Configuration</Text>
-        <Text size="sm" c="dimmed">
-          Current application settings and configuration details.
-        </Text>
-      </div>
+      <OverviewHeader />
 
       {config && (
         <>
