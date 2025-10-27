@@ -1,10 +1,5 @@
 import { useState, useEffect } from 'react';
-
-// Helper to get JWT from localStorage for Authorization header
-function getAuthHeaders(): HeadersInit {
-  const token = localStorage.getItem('stirling_jwt');
-  return token ? { 'Authorization': `Bearer ${token}` } : {};
-}
+import { useRequestHeaders } from '@app/hooks/useRequestHeaders';
 
 export interface AppConfig {
   baseUrl?: string;
@@ -46,14 +41,15 @@ export function useAppConfig(): UseAppConfigReturn {
   const [config, setConfig] = useState<AppConfig | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const headers = useRequestHeaders();
 
   const fetchConfig = async () => {
     try {
       setLoading(true);
       setError(null);
-      
+
       const response = await fetch('/api/v1/config/app-config', {
-        headers: getAuthHeaders(),
+        headers,
       });
       
       if (!response.ok) {
